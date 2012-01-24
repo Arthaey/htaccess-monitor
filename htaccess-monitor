@@ -3,12 +3,20 @@ require 'optparse'
 
 options = {}
 OptionParser.new do |opts|
+  opts.on("-d", "--dir [DIR]", "Subdirectory under $HOME to search") do |arg|
+    options[:dir] = arg
+  end
+  opts.on("-h", "--help", "Show this help message") do
+    puts opts
+    exit
+  end
   opts.on("-v", "--[no-]verbose", "Print output even when no files have been modified") do |arg|
     options[:verbose] = arg
   end
 end.parse!
 
-htaccess_search = File.join(ENV['HOME'], "www", "**", ".htaccess")
+search_dir = options[:dir] || "www"
+htaccess_search = File.join(ENV['HOME'], search_dir, "**", ".htaccess")
 files = Dir[htaccess_search]
 
 files_modified = false

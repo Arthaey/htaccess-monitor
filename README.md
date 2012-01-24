@@ -46,6 +46,13 @@ or
 
 # Usage
 
+    $ htaccess-monitor --help
+    
+    Usage: htaccess-monitor [options]
+        -d, --dir [DIR]                  Subdirectory under $HOME to search
+        -h, --help                       Show this help message
+        -v, --[no-]verbose               Print output even when no files have been modified
+
 _Tested in Ruby 1.8.7._
 
 ## Run manually
@@ -60,7 +67,5 @@ include something like the following in your crontab file:
     MAILTO='youremail@example.com'
     0 0 * * * /path/to/htaccess-monitor
 
-
-# TODO
-
- - support subdirectory other than ~/www
+(Normal cron/$PATH caveats apply. You specifically need to make sure cron knows
+where to find env, ruby, and svn.)
