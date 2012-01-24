@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+htaccess_search = File.join(ENV['HOME'], "www", "**", ".htaccess")
+files = Dir[htaccess_search]
+
+no_modifications = true
+puts "The following .htaccess files have been modified:"
+
+files.each do |file|
+  dir = File.dirname(file)
+  if File.exist?(File.join(dir, ".svn"))
+    svn_diff = `svn diff #{file}`
+    unless svn_diff.empty?
+      no_modifications = false
+      puts "\n  - #{file}\n\n"
+      puts svn_diff.gsub(/^/m, "    ")
+    end
+  end
+end
+
+puts "  [none]" if no_modifications
