@@ -39,6 +39,8 @@ or
 
     $ htaccess-monitor
     
+    $ htaccess-monitor --verbose
+    
     The following .htaccess files have been modified:
       [none]
 
@@ -48,8 +50,7 @@ _Tested in Ruby 1.8.7._
 
 ## Run manually
 
-The script takes no options. Just run it from anywhere. It only requires that
-`$HOME` is set.
+The script only requires that `$HOME` be set. Just run it from anywhere.
 
 ## Via cron
 
@@ -62,5 +63,4 @@ include something like the following in your crontab file:
 
 # TODO
 
- - only output "no modifications" if --verbose
  - support subdirectory other than ~/www

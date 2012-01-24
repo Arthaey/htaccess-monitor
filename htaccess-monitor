@@ -1,21 +1,35 @@
 #!/usr/bin/env ruby
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.on("-v", "--[no-]verbose", "Print output even when no files have been modified") do |arg|
+    options[:verbose] = arg
+  end
+end.parse!
 
 htaccess_search = File.join(ENV['HOME'], "www", "**", ".htaccess")
 files = Dir[htaccess_search]
 
-no_modifications = true
-puts "The following .htaccess files have been modified:"
+files_modified = false
+output = "The following .htaccess files have been modified:"
 
 files.each do |file|
   dir = File.dirname(file)
   if File.exist?(File.join(dir, ".svn"))
     svn_diff = `svn diff #{file}`
     unless svn_diff.empty?
-      no_modifications = false
-      puts "\n  - #{file}\n\n"
-      puts svn_diff.gsub(/^/m, "    ")
+      files_modified = true
+      output << "\n\n  - #{file}\n\n"
+      output << svn_diff.gsub(/^/m, "    ")
     end
   end
 end
 
-puts "  [none]" if no_modifications
+if !files_modified
+  output << "\n  [none]"
+end
+
+if files_modified or options[:verbose]
+  puts output
+end
